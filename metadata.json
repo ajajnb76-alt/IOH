@@ -1,0 +1,6 @@
+{
+  "name": "HOI4 Mobile Command",
+  "description": "Глобальная военная стратегия WWII с морскими зонами, туманом войны, фельдмаршалами, 3D-дивизиями, 2.5D/3D глобусом и сменой дня и ночи.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
