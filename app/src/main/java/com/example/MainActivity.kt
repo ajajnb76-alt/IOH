@@ -1,10 +1,13 @@
 package com.example
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -33,7 +36,12 @@ import com.example.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
+    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
     super.onCreate(savedInstanceState)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+      window.attributes.layoutInDisplayCutoutMode =
+        WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+    }
     enableEdgeToEdge()
     hideSystemBars()
     setContent {
@@ -69,29 +77,23 @@ fun HOI4CommandScreen() {
       wv.evaluateJavascript(
         """
         (function() {
-          var settingsModal = document.getElementById('modalSettings');
-          if (settingsModal && settingsModal.classList.contains('show')) {
-            closeModal('modalSettings');
+          var setOv = document.getElementById('setOv');
+          if (setOv) { setOv.remove(); return true; }
+          var leadOv = document.getElementById('leadOv');
+          if (leadOv) { leadOv.remove(); return true; }
+          var tabMod = document.getElementById('tabModalOverlay');
+          if (tabMod && !tabMod.classList.contains('hidden')) {
+            tabMod.classList.add('hidden');
             return true;
           }
-          var cmdModal = document.getElementById('modalCommanders');
-          if (cmdModal && cmdModal.classList.contains('show')) {
-            closeModal('modalCommanders');
+          var newsMod = document.getElementById('eventNewspaperOverlay');
+          if (newsMod && !newsMod.classList.contains('hidden')) {
+            newsMod.classList.add('hidden');
             return true;
           }
-          var peaceModal = document.getElementById('modalPeace');
-          if (peaceModal && peaceModal.classList.contains('show')) {
-            closeModal('modalPeace');
-            return true;
-          }
-          var sidePanel = document.getElementById('sidePanel');
-          if (sidePanel && sidePanel.classList.contains('open')) {
-            closeSidePanel();
-            return true;
-          }
-          var provBox = document.getElementById('provBox');
-          if (provBox && provBox.classList.contains('show')) {
-            closeProvInfo();
+          var insp = document.getElementById('provinceInspector');
+          if (insp && !insp.classList.contains('hidden')) {
+            insp.classList.add('hidden');
             return true;
           }
           return false;
